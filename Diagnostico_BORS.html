@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Checklist de Diagnóstico FTTH - BERRY OLT REMOTE SERVICES">
+    <meta name="theme-color" content="#2862b9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Checklist de Diagnóstico - BERRY OLT REMOTE SERVICES</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2862b9;
+            --accent-color: #4d9a4e;
+            --secondary-color: #1c4583;
+            --background-color: #FFFFFF;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            padding: 10px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--background-color);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .logo-section {
+            background: var(--background-color);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .logo-section img {
+            max-width: 280px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .logo-section h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .logo-section p {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .info-section {
+            background: var(--gray-100);
+            padding: 25px 20px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .info-section h2 {
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            font-size: 1.5em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-field label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        .info-field input, .info-field select {
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .info-field input:focus, .info-field select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .content {
+            padding: 30px 20px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+
+        .section-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 18px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-header h2 {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .section-score {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .section-body {
+            padding: 15px;
+            background: var(--background-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.3s;
+            page-break-inside: avoid;
+            gap: 12px;
+        }
+
+        .checklist-item:hover {
+            background: var(--gray-100);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox-wrapper {
+            padding-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-question {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .item-description {
+            font-size: 0.85em;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+        }
+
+        .item-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-size: 0.9em;
+        }
+
+        .option-label:hover {
+            background: var(--gray-200);
+        }
+
+        .option-label input {
+            cursor: pointer;
+        }
+
+        .observations {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+            font-size: 0.9em;
+        }
+
+        .export-section {
+            background: var(--gray-100);
+            padding: 25px 20px;
+            text-align: center;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .export-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px;
+            justify-content: center;
+        }
+
+        .btn-pdf {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-word {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-excel {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-calculate {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            page-break-inside: avoid;
+        }
+
+        .summary-section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: rgba(255,255,255,0.1);
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .summary-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .summary-card p {
+            opacity: 0.95;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--gray-200);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .recommendations {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning-color);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .recommendations h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .recommendations ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .instructions-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid var(--gray-200);
+        }
+
+        .instructions-box h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .instructions-box ol {
+            margin-left: 20px;
+            color: var(--gray-700);
+            line-height: 2;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .export-section {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .logo-section h2 {
+                font-size: 1.6em;
+            }
+
+            .logo-section p {
+                font-size: 1em;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .checklist-item {
+                flex-direction: column;
+            }
+
+            .checkbox-wrapper {
+                align-self: flex-start;
+            }
+
+            .item-options {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .logo-section img {
+                max-width: 200px;
+            }
+
+            .summary-card h3 {
+                font-size: 1.4em;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .summary-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) {
+            .btn:hover {
+                transform: none;
+            }
+
+            .option-label:hover {
+                background: transparent;
+            }
+        }
+
+        /* iOS Safari improvements */
+        @supports (-webkit-touch-callout: none) {
+            .info-field input, .info-field select {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="diagnosticForm">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="https://github.com/malon83/BERRY-OLT-REMOTE-SERVICES/blob/main/Logo%20BlueBerry.jpg" alt="BERRY OLT REMOTE SERVICES Logo" id="companyLogo">
+            <h2>BERRY OLT REMOTE SERVICES</h2>
+            <p>Servicios de Operación Remota de OLTs para ISP - Infraestructura de Red y Seguridad</p>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🔍 Checklist de Diagnóstico FTTH - Evaluación Técnica Integral</h1>
+            <p>Blueberry Group Corp - Servicios de valor con eficiencia</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Alineado con ISO 27001:2022 & NIST CSF 2.0</p>
+        </div>
+
+        <!-- Información General -->
+        <div class="info-section">
+            <h2>📋 Información General del Diagnóstico</h2>
+            <div class="info-grid">
+                <div class="info-field">
+                    <label for="ispName">Nombre del ISP:</label>
+                    <input type="text" id="ispName" placeholder="Ej: Mi ISP S.A.S">
+                </div>
+                <div class="info-field">
+                    <label for="diagnosisDate">Fecha del Diagnóstico:</label>
+                    <input type="date" id="diagnosisDate">
+                </div>
+                <div class="info-field">
+                    <label for="responsible">Responsable del Diagnóstico:</label>
+                    <input type="text" id="responsible" placeholder="Nombre completo">
+                </div>
+                <div class="info-field">
+                    <label for="position">Cargo:</label>
+                    <input type="text" id="position" placeholder="Ej: Administrador de Red">
+                </div>
+                <div class="info-field">
+                    <label for="operatorTier">Clase del Operador:</label>
+                    <select id="operatorTier">
+                        <option value="">Seleccione...</option>
+                        <option value="Tier 1">Tier 1 - Operador Mayorista Nacional/Internacional</option>
+                        <option value="Tier 2">Tier 2 - Operador Regional con Infraestructura Propia</option>
+                        <option value="Tier 3">Tier 3 - Operador Local/Residencial</option>
+                    </select>
+                </div>
+                <div class="info-field">
+                    <label for="clientCount">Número de Clientes Actuales:</label>
+                    <input type="number" id="clientCount" value="100">
+                </div>
+                <div class="info-field">
+                    <label for="growthProjection">Proyección de Crecimiento (12 meses):</label>
+                    <select id="growthProjection">
+                        <option value="100-200">100-200 clientes</option>
+                        <option value="200-500">200-500 clientes</option>
+                        <option value="500-1000">500-1000 clientes</option>
+                        <option value="1000+">1000+ clientes</option>
+                    </select>
+                </div>
+                <div class="info-field">
+                    <label for="location">Ubicación de la Sede Principal:</label>
+                    <input type="text" id="location" placeholder="Ciudad, Departamento">
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="content">
+            <!-- Sección 1: Infraestructura de Red -->
+            <div class="section" data-section="1">
+                <div class="section-header">
+                    <h2>🖥️ 1. Infraestructura de Red (MikroTik + ZTE)</h2>
+                    <div class="section-score" id="score-section1">0/100</div>
+                </div>
+                <div class="section-body">
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El MikroTik CCR2116 tiene firmware actualizado a la última versión estable?</div>
+                            <div class="item-description">RouterOS v7.x con últimos parches de seguridad aplicados</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_1" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_1" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_1" value="0" onchange="calculateScore()" data-section="1"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El OLT ZTE C650 tiene firmware verificado contra CVEs conocidos?</div>
+                            <div class="item-description">Especialmente CVE-2022-39070 y vulnerabilidades críticas</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_2" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_2" value="5" onchange="calculateScore()" data-section="1"> ⚠️ En proceso
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_2" value="0" onchange="calculateScore()" data-section="1"> ❌ No verificado
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe redundancia de energía (UPS + generador) para equipos críticos?</div>
+                            <div class="item-description">Mínimo 2 horas de autonomía para CCR2116 y OLT C650</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_3" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_3" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Parcial (solo UPS)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_3" value="0" onchange="calculateScore()" data-section="1"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los enlaces de uplink tienen capacidad suficiente para crecimiento?</div>
+                            <div class="item-description">Considerar 10G para 500+ clientes con servicios simétricos</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_4" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí (10G+)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_4" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Suficiente actual
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_4" value="0" onchange="calculateScore()" data-section="1"> ❌ Insuficiente
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe plan de redundancia HA para router de borde?</div>
+                            <div class="item-description">VRRP o segundo CCR2116 para failover automático</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_5" value="10" onchange="calculateScore()" data-section="1"> ✅ Implementado
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_5" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Planificado
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_5" value="0" onchange="calculateScore()" data-section="1"> ❌ No existe
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El presupuesto óptico está dentro de parámetros aceptables?</div>
+                            <div class="item-description">Potencia RX ONU entre -8 y -22 dBm para GPON/XGS-PON</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_6" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_6" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Algunos casos límite
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_6" value="0" onchange="calculateScore()" data-section="1"> ❌ Fuera de rango
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe documentación actualizada de la topología de red?</div>
+                            <div class="item-description">Diagramas de red, VLANs, IP addressing, ODN</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_7" value="10" onchange="calculateScore()" data-section="1"> ✅ Completa
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_7" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_7" value="0" onchange="calculateScore()" data-section="1"> ❌ No existe
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los backups de configuración son automáticos y externos?</div>
+                            <div class="item-description">Backup cada 6h a ubicación externa, probado trimestralmente</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_8" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_8" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Solo local
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_8" value="0" onchange="calculateScore()" data-section="1"> ❌ Manual/Inexistente
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe capacidad de puertos PON disponibles para crecimiento?</div>
+                            <div class="item-description">Mínimo 30% de puertos libres en OLT para expansión</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_9" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí (>30%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_9" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Limitado (10-30%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_9" value="0" onchange="calculateScore()" data-section="1"> ❌ Sin capacidad
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="1" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El ODN (fibra/splitters) está certificado y etiquetado?</div>
+                            <div class="item-description">Trazabilidad completa de fibra, splitters y cajas de distribución</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q1_10" value="10" onchange="calculateScore()" data-section="1"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_10" value="5" onchange="calculateScore()" data-section="1"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q1_10" value="0" onchange="calculateScore()" data-section="1"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: Seguridad y Cumplimiento -->
+            <div class="section" data-section="2">
+                <div class="section-header">
+                    <h2>🔐 2. Seguridad y Cumplimiento (ISO 27001 & NIST)</h2>
+                    <div class="section-score" id="score-section2">0/100</div>
+                </div>
+                <div class="section-body">
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Las APIs de integración (WispHub/SmartOLT/MikroTik) están restringidas por IP?</div>
+                            <div class="item-description">Acceso solo desde IPs autorizadas con firewall restrictivo</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_1" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_1" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_1" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe autenticación multifactor (MFA) para accesos críticos?</div>
+                            <div class="item-description">Admin de router, OLT, WispHub, SmartOLT</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_2" value="10" onchange="calculateScore()" data-section="2"> ✅ Implementado
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_2" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Planificado
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_2" value="0" onchange="calculateScore()" data-section="2"> ❌ No existe
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los datos de clientes en WispHub están encriptados?</div>
+                            <div class="item-description">Base de datos y backups con encriptación AES-256</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_3" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_3" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Solo backups
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_3" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe logging centralizado de eventos de seguridad?</div>
+                            <div class="item-description">Logs de MikroTik, ZTE, WispHub en servidor único/SIEM</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_4" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_4" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_4" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿La red de gestión está segmentada con VLAN dedicada?</div>
+                            <div class="item-description">VLAN separada para gestión de OLT/router con firewall estricto</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_5" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_5" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_5" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe procedimiento documentado de respuesta a incidentes?</div>
+                            <div class="item-description">Playbooks para 5 escenarios críticos mínimo</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_6" value="10" onchange="calculateScore()" data-section="2"> ✅ Completo
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_6" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Básico
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_6" value="0" onchange="calculateScore()" data-section="2"> ❌ No existe
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El personal está capacitado en seguridad y Ley 1581?</div>
+                            <div class="item-description">Capacitación anual en protección de datos y phishing</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_7" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_7" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_7" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe monitoreo proactivo de vulnerabilidades (CVEs)?</div>
+                            <div class="item-description">Suscripción a alertas de seguridad de MikroTik/ZTE</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_8" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_8" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Reactivo
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_8" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los servicios innecesarios están deshabilitados en equipos?</div>
+                            <div class="item-description">Telnet, FTP, HTTP deshabilitados; solo SSH/HTTPS/API-SSL</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_9" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_9" value="5" onchange="calculateScore()" data-section="2"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_9" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="2" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe registro de bases de datos ante la SIC (Colombia)?</div>
+                            <div class="item-description">Cumplimiento Ley 1581 de 2012 para protección de PII</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q2_10" value="10" onchange="calculateScore()" data-section="2"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_10" value="5" onchange="calculateScore()" data-section="2"> ⚠️ En trámite
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q2_10" value="0" onchange="calculateScore()" data-section="2"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 3: Gestión de Clientes y Servicios -->
+            <div class="section" data-section="3">
+                <div class="section-header">
+                    <h2>👥 3. Gestión de Clientes y Servicios (WispHub + SmartOLT)</h2>
+                    <div class="section-score" id="score-section3">0/100</div>
+                </div>
+                <div class="section-body">
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El aprovisionamiento de clientes está automatizado?</div>
+                            <div class="item-description">WispHub → SmartOLT → OLT sin intervención manual</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_1" value="10" onchange="calculateScore()" data-section="3"> ✅ Totalmente
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_1" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Parcialmente
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_1" value="0" onchange="calculateScore()" data-section="3"> ❌ Manual
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los servicios simétricos están correctamente configurados en OLT?</div>
+                            <div class="item-description">Line-profiles con mismo ancho de banda UP/DW</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_2" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_2" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Algunos planes
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_2" value="0" onchange="calculateScore()" data-section="3"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe QoS configurado para priorizar tráfico crítico?</div>
+                            <div class="item-description">VoIP con prioridad alta, IPTV con multicast optimizado</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_3" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_3" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Básico
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_3" value="0" onchange="calculateScore()" data-section="3"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El tiempo de aprovisionamiento promedio es menor a 24 horas?</div>
+                            <div class="item-description">Desde orden de venta hasta servicio activo</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_4" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí (<12h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_4" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Regular (12-24h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_4" value="0" onchange="calculateScore()" data-section="3"> ❌ Lento (>24h)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe sistema de tickets para soporte técnico?</div>
+                            <div class="item-description">Seguimiento de incidencias con SLA definido</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_5" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_5" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Básico
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_5" value="0" onchange="calculateScore()" data-section="3"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Los perfiles de ancho de banda coinciden con lo contratado?</div>
+                            <div class="item-description">Validación periódica de velocidad real vs. plan contratado</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_6" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_6" value="5" onchange="calculateScore()" data-section="3"> ⚠️ La mayoría
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_6" value="0" onchange="calculateScore()" data-section="3"> ❌ No validado
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe portal de autoservicio para clientes?</div>
+                            <div class="item-description">Consulta de consumo, pago en línea, reporte de fallas</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_7" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_7" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_7" value="0" onchange="calculateScore()" data-section="3"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿La tasa de morosidad está por debajo del 15%?</div>
+                            <div class="item-description">Gestión efectiva de cobranza y suspensiones automáticas</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_8" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí (<10%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_8" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Regular (10-15%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_8" value="0" onchange="calculateScore()" data-section="3"> ❌ Alta (>15%)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe integración entre WispHub y sistema de facturación?</div>
+                            <div class="item-description">Facturación automática, cortes por mora, reconexiones</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_9" value="10" onchange="calculateScore()" data-section="3"> ✅ Totalmente
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_9" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_9" value="0" onchange="calculateScore()" data-section="3"> ❌ Manual
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="3" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El NPS (Net Promoter Score) es superior a 50?</div>
+                            <div class="item-description">Satisfacción del cliente medida periódicamente</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q3_10" value="10" onchange="calculateScore()" data-section="3"> ✅ Sí (>50)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_10" value="5" onchange="calculateScore()" data-section="3"> ⚠️ Regular (30-50)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q3_10" value="0" onchange="calculateScore()" data-section="3"> ❌ Bajo (<30)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 4: Monitoreo y Performance -->
+            <div class="section" data-section="4">
+                <div class="section-header">
+                    <h2>📊 4. Monitoreo y Performance</h2>
+                    <div class="section-score" id="score-section4">0/100</div>
+                </div>
+                <div class="section-body">
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe sistema de monitoreo proactivo (LibreNMS/PRTG/Zabbix)?</div>
+                            <div class="item-description">Alertas automáticas antes de que el cliente reporte falla</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_1" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_1" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Básico
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_1" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El uptime de la red es superior al 99.5%?</div>
+                            <div class="item-description">Medición mensual de disponibilidad del servicio</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_2" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí (>99.9%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_2" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Regular (99.5-99.9%)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_2" value="0" onchange="calculateScore()" data-section="4"> ❌ Bajo (<99.5%)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El MTTD (Mean Time to Detect) es menor a 4 horas?</div>
+                            <div class="item-description">Tiempo promedio entre falla y detección</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_3" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí (<2h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_3" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Regular (2-4h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_3" value="0" onchange="calculateScore()" data-section="4"> ❌ Lento (>4h)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿El MTTR (Mean Time to Resolve) es menor a 2 horas?</div>
+                            <div class="item-description">Tiempo promedio entre detección y resolución</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_4" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí (<1h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_4" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Regular (1-2h)
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_4" value="0" onchange="calculateScore()" data-section="4"> ❌ Lento (>2h)
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe monitoreo de potencia óptica por ONU?</div>
+                            <div class="item-description">Alertas cuando potencia RX está fuera de rango (-8 a -22 dBm)</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_5" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_5" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_5" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Se monitorea el uso de ancho de banda por cliente?</div>
+                            <div class="item-description">Detección de abusos y planificación de capacidad</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_6" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_6" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Parcial
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_6" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existen dashboards de performance en tiempo real?</div>
+                            <div class="item-description">Visualización de métricas clave para equipo NOC</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_7" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_7" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Básico
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_7" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Se realizan pruebas de velocidad periódicas a clientes?</div>
+                            <div class="item-description">Validación automática o manual de velocidad contratada</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_8" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_8" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Ocasional
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_8" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Existe alertamiento por SMS/Email/WhatsApp para fallas críticas?</div>
+                            <div class="item-description">Notificaciones inmediatas al equipo técnico</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_9" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_9" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Solo email
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_9" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" onchange="calculateScore()" data-section="4" data-weight="10" aria-label="Completado">
+                        </div>
+                        <div class="item-content">
+                            <div class="item-question">¿Se generan reportes mensuales de performance?</div>
+                            <div class="item-description">Análisis de tendencias, capacidad y calidad de servicio</div>
+                            <div class="item-options">
+                                <label class="option-label">
+                                    <input type="radio" name="q4_10" value="10" onchange="calculateScore()" data-section="4"> ✅ Sí
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_10" value="5" onchange="calculateScore()" data-section="4"> ⚠️ Irregular
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="q4_10" value="0" onchange="calculateScore()" data-section="4"> ❌ No
+                                </label>
+                            </div>
+                            <textarea class="observations" placeholder="Observaciones y evidencias..." aria-label="Observaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen y Recomendaciones -->
+            <div class="summary-section" id="summarySection">
+                <h2>📈 Resumen del Diagnóstico</h2>
+                
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3 id="totalScore">0%</h3>
+                        <p>Puntaje Total</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="section1Score">0%</h3>
+                        <p>Infraestructura</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="section2Score">0%</h3>
+                        <p>Seguridad</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="section3Score">0%</h3>
+                        <p>Gestión Clientes</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="section4Score">0%</h3>
+                        <p>Monitoreo</p>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;">0%</div>
+                </div>
+
+                <div class="recommendations" id="recommendationsSection" style="display: none;">
+                    <h3>🎯 Recomendaciones Prioritarias</h3>
+                    <ul id="recommendationsList">
+                        <!-- Se llenará dinámicamente -->
+                    </ul>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <p id="riskLevel" style="font-size: 1.5em; font-weight: bold;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Exportación -->
+        <div class="export-section">
+            <h2>📤 Exportar Resultados</h2>
+            <p style="color: var(--gray-700); margin-bottom: 15px;">Descarga el diagnóstico completado en tu formato preferido</p>
+            
+            <div class="export-buttons">
+                <button class="btn btn-calculate" onclick="calculateScore()" type="button">
+                    🔄 Calcular Puntaje
+                </button>
+                <button class="btn btn-pdf" onclick="exportToPDF()" type="button">
+                    📄 Exportar a PDF
+                </button>
+                <button class="btn btn-word" onclick="exportToWord()" type="button">
+                    📝 Exportar a Word
+                </button>
+                <button class="btn btn-excel" onclick="exportToExcel()" type="button">
+                    📊 Exportar a Excel
+                </button>
+                <button class="btn" style="background: #6c757d; color: white;" onclick="resetForm()" type="button">
+                    🗑️ Limpiar Formulario
+                </button>
+            </div>
+
+            <div class="instructions-box">
+                <h3>📌 Instrucciones de Uso</h3>
+                <ol>
+                    <li>Complete toda la información general en la sección superior</li>
+                    <li>Responda cada pregunta seleccionando la opción que mejor describa su situación actual</li>
+                    <li>Agregue observaciones y evidencias en los campos de texto</li>
+                    <li>Click en "Calcular Puntaje" para ver el resumen automático</li>
+                    <li>Exporte los resultados en el formato que necesite (PDF, Word o Excel)</li>
+                    <li>Guarde una copia del diagnóstico para seguimiento y auditorías</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar fecha actual
+        document.getElementById('diagnosisDate').valueAsDate = new Date();
+
+        // Función para calcular puntajes
+        function calculateScore() {
+            const sections = [1, 2, 3, 4];
+            let totalScore = 0;
+            let totalPossible = 0;
+
+            sections.forEach(sectionNum => {
+                const section = document.querySelector(`[data-section="${sectionNum}"]`);
+                const radios = section.querySelectorAll('input[type="radio"]:checked');
+                let sectionScore = 0;
+                let sectionPossible = 0;
+
+                radios.forEach(radio => {
+                    sectionScore += parseInt(radio.value);
+                    sectionPossible += 10;
+                });
+
+                const sectionPercentage = sectionPossible > 0 ? Math.round((sectionScore / sectionPossible) * 100) : 0;
+                document.getElementById(`score-section${sectionNum}`).textContent = `${sectionScore}/${sectionPossible} (${sectionPercentage}%)`;
+                document.getElementById(`section${sectionNum}Score`).textContent = `${sectionPercentage}%`;
+
+                totalScore += sectionScore;
+                totalPossible += sectionPossible;
+            });
+
+            const overallPercentage = totalPossible > 0 ? Math.round((totalScore / totalPossible) * 100) : 0;
+            document.getElementById('totalScore').textContent = `${overallPercentage}%`;
+            document.getElementById('progressFill').style.width = `${overallPercentage}%`;
+            document.getElementById('progressFill').textContent = `${overallPercentage}%`;
+
+            // Determinar nivel de riesgo
+            const riskElement = document.getElementById('riskLevel');
+            const recommendationsSection = document.getElementById('recommendationsSection');
+            const recommendationsList = document.getElementById('recommendationsList');
+
+            if (overallPercentage >= 80) {
+                riskElement.textContent = '🟢 NIVEL DE RIESGO: BAJO - Infraestructura sólida';
+                riskElement.style.color = '#10b981';
+            } else if (overallPercentage >= 60) {
+                riskElement.textContent = '🟡 NIVEL DE RIESGO: MEDIO - Mejoras necesarias';
+                riskElement.style.color = '#f59e0b';
+            } else {
+                riskElement.textContent = '🔴 NIVEL DE RIESGO: ALTO - Acción inmediata requerida';
+                riskElement.style.color = '#ef4444';
+            }
+
+            // Generar recomendaciones
+            generateRecommendations(sections);
+        }
+
+        function generateRecommendations(sections) {
+            const recommendations = [];
+            const sectionNames = ['Infraestructura de Red', 'Seguridad y Cumplimiento', 'Gestión de Clientes', 'Monitoreo y Performance'];
+
+            sections.forEach(sectionNum => {
+                const section = document.querySelector(`[data-section="${sectionNum}"]`);
+                const scoreElement = document.getElementById(`score-section${sectionNum}`);
+                const scoreText = scoreElement.textContent;
+                const percentage = parseInt(scoreText.match(/\d+/)[0]);
+
+                if (percentage < 60) {
+                    recommendations.push(`⚠️ <strong>${sectionNames[sectionNum-1]} (${percentage}%)</strong>: Requiere atención prioritaria. Revise los ítems marcados como "No" o "Parcial".`);
+                } else if (percentage < 80) {
+                    recommendations.push(`📋 <strong>${sectionNames[sectionNum-1]} (${percentage}%)</strong>: Mejoras recomendadas para optimizar esta área.`);
+                }
+            });
+
+            const recommendationsSection = document.getElementById('recommendationsSection');
+            const recommendationsList = document.getElementById('recommendationsList');
+
+            if (recommendations.length > 0) {
+                recommendationsSection.style.display = 'block';
+                recommendationsList.innerHTML = recommendations.map(rec => `<li style="margin-bottom: 10px;">${rec}</li>`).join('');
+            } else {
+                recommendationsSection.style.display = 'none';
+            }
+        }
+
+        // Exportar a PDF - CORREGIDO
+        function exportToPDF() {
+            const element = document.getElementById('diagnosticForm');
+            const date = new Date().toISOString().split('T')[0];
+            const responsible = document.getElementById('responsible').value || 'Sin_nombre';
+            const ispName = document.getElementById('ispName').value || 'BERRY_OLT_REMOTE_SERVICES';
+            
+            // Ocultar botones de exportación temporalmente
+            const exportSection = document.querySelector('.export-section');
+            exportSection.style.display = 'none';
+
+            // Forzar expansión de todos los textareas para que se vean en el PDF
+            document.querySelectorAll('.observations').forEach(textarea => {
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            });
+
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `Diagnostico_${ispName}_${responsible}_${date}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true,
+                    allowTaint: true
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+                enableLinks: true
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                exportSection.style.display = 'block';
+                // Restaurar altura de textareas
+                document.querySelectorAll('.observations').forEach(textarea => {
+                    textarea.style.height = 'auto';
+                });
+            }).catch(err => {
+                console.error('Error exportando PDF:', err);
+                alert('Error al exportar PDF. Intente nuevamente o use la opción de Word/Excel.');
+                exportSection.style.display = 'block';
+            });
+        }
+
+        // Exportar a Word
+        function exportToWord() {
+            const date = new Date().toISOString().split('T')[0];
+            const responsible = document.getElementById('responsible').value || 'Sin_nombre';
+            const ispName = document.getElementById('ispName').value || 'BERRY OLT REMOTE SERVICES';
+            const operatorTier = document.getElementById('operatorTier').value || 'No especificado';
+            const clientCount = document.getElementById('clientCount').value;
+            const growthProjection = document.getElementById('growthProjection').value;
+            const location = document.getElementById('location').value || 'No especificada';
+            const position = document.getElementById('position').value || 'No especificado';
+            
+            let content = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                      xmlns:w='urn:schemas-microsoft-com:office:word' 
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Diagnóstico ${ispName}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; }
+                        h1 { color: #2862b9; }
+                        h2 { color: #1c4583; border-bottom: 2px solid #4d9a4e; padding-bottom: 5px; }
+                        .info { background: #f3f4f6; padding: 15px; margin: 10px 0; border-radius: 5px; }
+                        .item { margin: 15px 0; padding: 10px; border: 1px solid #e5e7eb; border-radius: 5px; }
+                        .question { font-weight: bold; color: #1c4583; }
+                        .observations { background: #fff3cd; padding: 8px; margin-top: 8px; border-left: 3px solid #f59e0b; }
+                        .summary { background: #2862b9; color: white; padding: 20px; border-radius: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <h1 style="text-align: center;">🔍 Servicios de Operación Remota de OLTs para ISP</h1>
+                    <h2 style="text-align: center; color: #4d9a4e;">${ispName}</h2>
+                    
+                    <div class="info">
+                        <p><strong>Fecha:</strong> ${date}</p>
+                        <p><strong>Responsable:</strong> ${responsible}</p>
+                        <p><strong>Cargo:</strong> ${position}</p>
+                        <p><strong>Clase Operador:</strong> ${operatorTier}</p>
+                        <p><strong>Clientes Actuales:</strong> ${clientCount}</p>
+                        <p><strong>Proyección Crecimiento:</strong> ${growthProjection}</p>
+                        <p><strong>Ubicación:</strong> ${location}</p>
+                    </div>
+                    <hr>
+            `;
+
+            document.querySelectorAll('.section').forEach((section, sectionIndex) => {
+                const sectionTitle = section.querySelector('h2').textContent;
+                const sectionScore = section.querySelector('.section-score').textContent;
+                content += `<h2>${sectionTitle} - ${sectionScore}</h2>`;
+                
+                section.querySelectorAll('.checklist-item').forEach((item, index) => {
+                    const question = item.querySelector('.item-question').textContent;
+                    const description = item.querySelector('.item-description').textContent;
+                    const checked = item.querySelector('input[type="checkbox"]').checked ? 'Sí' : 'No';
+                    const radioChecked = item.querySelector('input[type="radio"]:checked');
+                    const state = radioChecked ? radioChecked.parentElement.textContent.trim() : 'No respondido';
+                    const observations = item.querySelector('.observations').value;
+                    
+                    content += `
+                        <div class="item">
+                            <p class="question">${index + 1}. ${question}</p>
+                            <p style="font-size: 0.9em; color: #666;">${description}</p>
+                            <p>✅ Completado: ${checked}</p>
+                            <p>📊 Estado: ${state}</p>
+                            ${observations ? `<div class="observations">📝 <strong>Observaciones:</strong> ${observations}</div>` : ''}
+                        </div>
+                    `;
+                });
+            });
+
+            content += `
+                    <hr>
+                    <div class="summary">
+                        <h2 style="color: white; border-bottom: 2px solid white;">📈 Resumen del Diagnóstico</h2>
+                        <p><strong>Puntaje Total:</strong> ${document.getElementById('totalScore').textContent}</p>
+                        <p><strong>Infraestructura:</strong> ${document.getElementById('section1Score').textContent}</p>
+                        <p><strong>Seguridad:</strong> ${document.getElementById('section2Score').textContent}</p>
+                        <p><strong>Gestión Clientes:</strong> ${document.getElementById('section3Score').textContent}</p>
+                        <p><strong>Monitoreo:</strong> ${document.getElementById('section4Score').textContent}</p>
+                        <p><strong>Nivel de Riesgo:</strong> ${document.getElementById('riskLevel').textContent}</p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; font-size: 0.8em; color: #666; text-align: center;">
+                        <p>Documento generado automáticamente - BERRY OLT REMOTE SERVICES</p>
+                        <p>Fecha de generación: ${new Date().toLocaleString('es-CO')}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', content], {
+                type: 'application/msword'
+            });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Diagnostico_${ispName.replace(/\s+/g, '_')}_${responsible.replace(/\s+/g, '_')}_${date}.doc`;
+            link.click();
+        }
+
+        // Exportar a Excel
+        function exportToExcel() {
+            const date = new Date().toISOString().split('T')[0];
+            const responsible = document.getElementById('responsible').value || 'Sin_nombre';
+            const ispName = document.getElementById('ispName').value || 'BERRY OLT REMOTE SERVICES';
+            const operatorTier = document.getElementById('operatorTier').value || 'No especificado';
+            
+            const data = [];
+            
+            // Header con información de la empresa
+            data.push(['CHECKLIST DE DIAGNÓSTICO FTTH']);
+            data.push(['Empresa:', ispName]);
+            data.push(['Fecha', date]);
+            data.push(['Responsable', responsible]);
+            data.push(['Cargo', document.getElementById('position').value || 'No especificado']);
+            data.push(['Clase Operador', operatorTier]);
+            data.push(['Clientes Actuales', document.getElementById('clientCount').value]);
+            data.push(['Proyección Crecimiento', document.getElementById('growthProjection').value]);
+            data.push(['Ubicación', document.getElementById('location').value || 'No especificada']);
+            data.push([]);
+            
+            // Secciones
+            const sectionNames = ['Infraestructura de Red', 'Seguridad y Cumplimiento', 'Gestión de Clientes', 'Monitoreo y Performance'];
+            
+            document.querySelectorAll('.section').forEach((section, sectionIndex) => {
+                const sectionScore = section.querySelector('.section-score').textContent;
+                data.push([`═══════════════════════════════════════════════════════════`]);
+                data.push([`SECCIÓN ${sectionIndex + 1}: ${sectionNames[sectionIndex]} - ${sectionScore}`]);
+                data.push([`═══════════════════════════════════════════════════════════`]);
+                data.push(['#', 'Pregunta', 'Descripción', 'Completado', 'Estado', 'Observaciones']);
+                
+                section.querySelectorAll('.checklist-item').forEach((item, index) => {
+                    const question = item.querySelector('.item-question').textContent;
+                    const description = item.querySelector('.item-description').textContent;
+                    const checked = item.querySelector('input[type="checkbox"]').checked ? 'Sí' : 'No';
+                    const radioChecked = item.querySelector('input[type="radio"]:checked');
+                    const state = radioChecked ? radioChecked.parentElement.textContent.trim() : 'No respondido';
+                    const observations = item.querySelector('.observations').value;
+                    
+                    data.push([index + 1, question, description, checked, state, observations]);
+                });
+                
+                data.push(['', '', '', '', '', '']);
+            });
+            
+            // Resumen
+            data.push(['═══════════════════════════════════════════════════════════']);
+            data.push(['RESUMEN DEL DIAGNÓSTICO']);
+            data.push(['═══════════════════════════════════════════════════════════']);
+            data.push(['Puntaje Total', document.getElementById('totalScore').textContent]);
+            data.push(['Infraestructura', document.getElementById('section1Score').textContent]);
+            data.push(['Seguridad', document.getElementById('section2Score').textContent]);
+            data.push(['Gestión Clientes', document.getElementById('section3Score').textContent]);
+            data.push(['Monitoreo', document.getElementById('section4Score').textContent]);
+            data.push(['Nivel de Riesgo', document.getElementById('riskLevel').textContent]);
+            data.push(['', '', '', '', '', '']);
+            data.push(['Fecha de generación:', new Date().toLocaleString('es-CO')]);
+            data.push(['BERRY OLT REMOTE SERVICES - Documento Confidencial']);
+            
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            
+            // Configurar ancho de columnas
+            ws['!cols'] = [
+                { wch: 5 },
+                { wch: 60 },
+                { wch: 40 },
+                { wch: 12 },
+                { wch: 20 },
+                { wch: 50 }
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Diagnóstico');
+            
+            XLSX.writeFile(wb, `Diagnostico_${ispName.replace(/\s+/g, '_')}_${responsible.replace(/\s+/g, '_')}_${date}.xlsx`);
+        }
+
+        // Resetear formulario
+        function resetForm() {
+            if (confirm('¿Está seguro de que desea limpiar todo el formulario? Esta acción no se puede deshacer.')) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                document.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+                document.getElementById('diagnosisDate').valueAsDate = new Date();
+                document.getElementById('ispName').value = 'BERRY OLT REMOTE SERVICES';
+                document.getElementById('responsible').value = '';
+                document.getElementById('position').value = '';
+                document.getElementById('operatorTier').value = '';
+                document.getElementById('clientCount').value = '100';
+                document.getElementById('location').value = '';
+                
+                // Reset scores
+                document.getElementById('totalScore').textContent = '0%';
+                document.getElementById('section1Score').textContent = '0%';
+                document.getElementById('section2Score').textContent = '0%';
+                document.getElementById('section3Score').textContent = '0%';
+                document.getElementById('section4Score').textContent = '0%';
+                document.getElementById('progressFill').style.width = '0%';
+                document.getElementById('progressFill').textContent = '0%';
+                document.getElementById('riskLevel').textContent = '';
+                document.getElementById('recommendationsSection').style.display = 'none';
+                
+                [1, 2, 3, 4].forEach(num => {
+                    document.getElementById(`score-section${num}`).textContent = '0/100';
+                });
+                
+                calculateScore();
+            }
+        }
+
+        // Auto-calcular al cambiar cualquier input
+        document.addEventListener('change', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                // Calcular automáticamente después de 500ms sin cambios
+                clearTimeout(window.calcTimeout);
+                window.calcTimeout = setTimeout(calculateScore, 500);
+            }
+        });
+
+        // Inicializar nombre del ISP por defecto
+        document.getElementById('ispName').value = 'BERRY OLT REMOTE SERVICES';
+
+        // Calcular inicialmente
+        calculateScore();
+    </script>
+</body>
+</html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Checklist de Diagnóstico FTTH - BERRY OLT REMOTE SERVICES">
+<meta name="theme-color" content="#2862b9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
